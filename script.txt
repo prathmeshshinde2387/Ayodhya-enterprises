@@ -1,0 +1,980 @@
+// DOM Elements
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+const navbar = document.getElementById('navbar');
+const contactForm = document.getElementById('contactForm');
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    calculateLoan();
+    setupScrollAnimation();
+});
+
+// Filter Buttons
+// Mobile Menu
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    } else {
+        navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+    }
+});
+
+// Loan Calculator
+function calculateLoan() {
+    const vehiclePrice = parseFloat(document.getElementById('vehiclePrice').value) || 0;
+    const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+    const loanTerm = parseInt(document.getElementById('loanTerm').value) || 60;
+    const creditScore = document.getElementById('creditScore').value;
+
+    // Adjust rate based on credit score
+    let adjustedRate = interestRate;
+    switch(creditScore) {
+        case 'excellent': adjustedRate = Math.max(interestRate - 2, 3.9); break;
+        case 'good': adjustedRate = interestRate; break;
+        case 'fair': adjustedRate = interestRate + 3; break;
+        case 'poor': adjustedRate = interestRate + 6; break;
+    }
+
+    const loanAmount = vehiclePrice - downPayment;
+    const monthlyRate = adjustedRate / 100 / 12;
+    const numberOfPayments = loanTerm;
+
+    let monthlyPayment;
+    if (monthlyRate === 0) {
+        monthlyPayment = loanAmount / numberOfPayments;
+    } else {
+        monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    }
+
+    const totalCost = monthlyPayment * numberOfPayments + downPayment;
+    const totalInterest = totalCost - vehiclePrice;
+
+    document.getElementById('monthlyPayment').textContent = '₹' + monthlyPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('loanAmount').textContent = '₹' + loanAmount.toLocaleString();
+    document.getElementById('totalInterest').textContent = '₹' + totalInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('totalCost').textContent = '₹' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Update interest rate display
+    document.getElementById('interestRate').value = adjustedRate.toFixed(1);
+}
+
+// Auto-calculate on input change
+document.querySelectorAll('#vehiclePrice, #downPayment, #interestRate, #loanTerm, #creditScore').forEach(input => {
+    input.addEventListener('input', calculateLoan);
+    input.addEventListener('change', calculateLoan);
+});
+
+// Contact Form
+contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        interest: document.getElementById('interest').value,
+        message: document.getElementById('message').value
+    };
+
+    // Simulate form submission
+    alert('Thank you, ' + formData.firstName + '! We have received your inquiry and will contact you within 24 hours.\n\nNote: This is a demo. In production, connect this to a backend service like Formspree, Netlify Forms, or EmailJS.');
+
+    contactForm.reset();
+});
+
+// Scroll Animation
+function setupScrollAnimation() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .car-card, .financing-card, .requirement').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});// DOM Elements
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+const navbar = document.getElementById('navbar');
+const contactForm = document.getElementById('contactForm');
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    calculateLoan();
+    setupScrollAnimation();
+});
+
+// Filter Buttons
+// Mobile Menu
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    } else {
+        navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+    }
+});
+
+// Loan Calculator
+function calculateLoan() {
+    const vehiclePrice = parseFloat(document.getElementById('vehiclePrice').value) || 0;
+    const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+    const loanTerm = parseInt(document.getElementById('loanTerm').value) || 60;
+    const creditScore = document.getElementById('creditScore').value;
+
+    // Adjust rate based on credit score
+    let adjustedRate = interestRate;
+    switch(creditScore) {
+        case 'excellent': adjustedRate = Math.max(interestRate - 2, 3.9); break;
+        case 'good': adjustedRate = interestRate; break;
+        case 'fair': adjustedRate = interestRate + 3; break;
+        case 'poor': adjustedRate = interestRate + 6; break;
+    }
+
+    const loanAmount = vehiclePrice - downPayment;
+    const monthlyRate = adjustedRate / 100 / 12;
+    const numberOfPayments = loanTerm;
+
+    let monthlyPayment;
+    if (monthlyRate === 0) {
+        monthlyPayment = loanAmount / numberOfPayments;
+    } else {
+        monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    }
+
+    const totalCost = monthlyPayment * numberOfPayments + downPayment;
+    const totalInterest = totalCost - vehiclePrice;
+
+    document.getElementById('monthlyPayment').textContent = '₹' + monthlyPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('loanAmount').textContent = '₹' + loanAmount.toLocaleString();
+    document.getElementById('totalInterest').textContent = '₹' + totalInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('totalCost').textContent = '₹' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Update interest rate display
+    document.getElementById('interestRate').value = adjustedRate.toFixed(1);
+}
+
+// Auto-calculate on input change
+document.querySelectorAll('#vehiclePrice, #downPayment, #interestRate, #loanTerm, #creditScore').forEach(input => {
+    input.addEventListener('input', calculateLoan);
+    input.addEventListener('change', calculateLoan);
+});
+
+// Contact Form
+contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        interest: document.getElementById('interest').value,
+        message: document.getElementById('message').value
+    };
+
+    // Simulate form submission
+    alert('Thank you, ' + formData.firstName + '! We have received your inquiry and will contact you within 24 hours.\n\nNote: This is a demo. In production, connect this to a backend service like Formspree, Netlify Forms, or EmailJS.');
+
+    contactForm.reset();
+});
+
+// Scroll Animation
+function setupScrollAnimation() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .car-card, .financing-card, .requirement').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});// Filter Buttons
+// Mobile Menu
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    } else {
+        navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+    }
+});
+
+// Loan Calculator
+function calculateLoan() {
+    const vehiclePrice = parseFloat(document.getElementById('vehiclePrice').value) || 0;
+    const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+    const loanTerm = parseInt(document.getElementById('loanTerm').value) || 60;
+    const creditScore = document.getElementById('creditScore').value;
+
+    // Adjust rate based on credit score
+    let adjustedRate = interestRate;
+    switch(creditScore) {
+        case 'excellent': adjustedRate = Math.max(interestRate - 2, 3.9); break;
+        case 'good': adjustedRate = interestRate; break;
+        case 'fair': adjustedRate = interestRate + 3; break;
+        case 'poor': adjustedRate = interestRate + 6; break;
+    }
+
+    const loanAmount = vehiclePrice - downPayment;
+    const monthlyRate = adjustedRate / 100 / 12;
+    const numberOfPayments = loanTerm;
+
+    let monthlyPayment;
+    if (monthlyRate === 0) {
+        monthlyPayment = loanAmount / numberOfPayments;
+    } else {
+        monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    }
+
+    const totalCost = monthlyPayment * numberOfPayments + downPayment;
+    const totalInterest = totalCost - vehiclePrice;
+
+    document.getElementById('monthlyPayment').textContent = '₹' + monthlyPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('loanAmount').textContent = '₹' + loanAmount.toLocaleString();
+    document.getElementById('totalInterest').textContent = '₹' + totalInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('totalCost').textContent = '₹' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Update interest rate display
+    document.getElementById('interestRate').value = adjustedRate.toFixed(1);
+}
+
+// Auto-calculate on input change
+document.querySelectorAll('#vehiclePrice, #downPayment, #interestRate, #loanTerm, #creditScore').forEach(input => {
+    input.addEventListener('input', calculateLoan);
+    input.addEventListener('change', calculateLoan);
+});
+
+// Contact Form
+contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        interest: document.getElementById('interest').value,
+        message: document.getElementById('message').value
+    };
+
+    // Simulate form submission
+    alert('Thank you, ' + formData.firstName + '! We have received your inquiry and will contact you within 24 hours.\n\nNote: This is a demo. In production, connect this to a backend service like Formspree, Netlify Forms, or EmailJS.');
+
+    contactForm.reset();
+});
+
+// Scroll Animation
+function setupScrollAnimation() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .car-card, .financing-card, .requirement').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});// DOM Elements
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+const navbar = document.getElementById('navbar');
+const contactForm = document.getElementById('contactForm');
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    calculateLoan();
+    setupScrollAnimation();
+});
+
+// Filter Buttons
+// Mobile Menu
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    } else {
+        navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+    }
+});
+
+// Loan Calculator
+function calculateLoan() {
+    const vehiclePrice = parseFloat(document.getElementById('vehiclePrice').value) || 0;
+    const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+    const loanTerm = parseInt(document.getElementById('loanTerm').value) || 60;
+    const creditScore = document.getElementById('creditScore').value;
+
+    // Adjust rate based on credit score
+    let adjustedRate = interestRate;
+    switch(creditScore) {
+        case 'excellent': adjustedRate = Math.max(interestRate - 2, 3.9); break;
+        case 'good': adjustedRate = interestRate; break;
+        case 'fair': adjustedRate = interestRate + 3; break;
+        case 'poor': adjustedRate = interestRate + 6; break;
+    }
+
+    const loanAmount = vehiclePrice - downPayment;
+    const monthlyRate = adjustedRate / 100 / 12;
+    const numberOfPayments = loanTerm;
+
+    let monthlyPayment;
+    if (monthlyRate === 0) {
+        monthlyPayment = loanAmount / numberOfPayments;
+    } else {
+        monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    }
+
+    const totalCost = monthlyPayment * numberOfPayments + downPayment;
+    const totalInterest = totalCost - vehiclePrice;
+
+    document.getElementById('monthlyPayment').textContent = '₹' + monthlyPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('loanAmount').textContent = '₹' + loanAmount.toLocaleString();
+    document.getElementById('totalInterest').textContent = '₹' + totalInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('totalCost').textContent = '₹' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Update interest rate display
+    document.getElementById('interestRate').value = adjustedRate.toFixed(1);
+}
+
+// Auto-calculate on input change
+document.querySelectorAll('#vehiclePrice, #downPayment, #interestRate, #loanTerm, #creditScore').forEach(input => {
+    input.addEventListener('input', calculateLoan);
+    input.addEventListener('change', calculateLoan);
+});
+
+// Contact Form
+contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        interest: document.getElementById('interest').value,
+        message: document.getElementById('message').value
+    };
+
+    // Simulate form submission
+    alert('Thank you, ' + formData.firstName + '! We have received your inquiry and will contact you within 24 hours.\n\nNote: This is a demo. In production, connect this to a backend service like Formspree, Netlify Forms, or EmailJS.');
+
+    contactForm.reset();
+});
+
+// Scroll Animation
+function setupScrollAnimation() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .car-card, .financing-card, .requirement').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});// Mobile Menu
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    } else {
+        navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+    }
+});
+
+// Loan Calculator
+function calculateLoan() {
+    const vehiclePrice = parseFloat(document.getElementById('vehiclePrice').value) || 0;
+    const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+    const loanTerm = parseInt(document.getElementById('loanTerm').value) || 60;
+    const creditScore = document.getElementById('creditScore').value;
+
+    // Adjust rate based on credit score
+    let adjustedRate = interestRate;
+    switch(creditScore) {
+        case 'excellent': adjustedRate = Math.max(interestRate - 2, 3.9); break;
+        case 'good': adjustedRate = interestRate; break;
+        case 'fair': adjustedRate = interestRate + 3; break;
+        case 'poor': adjustedRate = interestRate + 6; break;
+    }
+
+    const loanAmount = vehiclePrice - downPayment;
+    const monthlyRate = adjustedRate / 100 / 12;
+    const numberOfPayments = loanTerm;
+
+    let monthlyPayment;
+    if (monthlyRate === 0) {
+        monthlyPayment = loanAmount / numberOfPayments;
+    } else {
+        monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    }
+
+    const totalCost = monthlyPayment * numberOfPayments + downPayment;
+    const totalInterest = totalCost - vehiclePrice;
+
+    document.getElementById('monthlyPayment').textContent = '₹' + monthlyPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('loanAmount').textContent = '₹' + loanAmount.toLocaleString();
+    document.getElementById('totalInterest').textContent = '₹' + totalInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('totalCost').textContent = '₹' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Update interest rate display
+    document.getElementById('interestRate').value = adjustedRate.toFixed(1);
+}
+
+// Auto-calculate on input change
+document.querySelectorAll('#vehiclePrice, #downPayment, #interestRate, #loanTerm, #creditScore').forEach(input => {
+    input.addEventListener('input', calculateLoan);
+    input.addEventListener('change', calculateLoan);
+});
+
+// Contact Form
+contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        interest: document.getElementById('interest').value,
+        message: document.getElementById('message').value
+    };
+
+    // Simulate form submission
+    alert('Thank you, ' + formData.firstName + '! We have received your inquiry and will contact you within 24 hours.\n\nNote: This is a demo. In production, connect this to a backend service like Formspree, Netlify Forms, or EmailJS.');
+
+    contactForm.reset();
+});
+
+// Scroll Animation
+function setupScrollAnimation() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .car-card, .financing-card, .requirement').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});// DOM Elements
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+const navbar = document.getElementById('navbar');
+const contactForm = document.getElementById('contactForm');
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    calculateLoan();
+    setupScrollAnimation();
+});
+
+// Filter Buttons
+// Mobile Menu
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    } else {
+        navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+    }
+});
+
+// Loan Calculator
+function calculateLoan() {
+    const vehiclePrice = parseFloat(document.getElementById('vehiclePrice').value) || 0;
+    const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+    const loanTerm = parseInt(document.getElementById('loanTerm').value) || 60;
+    const creditScore = document.getElementById('creditScore').value;
+
+    // Adjust rate based on credit score
+    let adjustedRate = interestRate;
+    switch(creditScore) {
+        case 'excellent': adjustedRate = Math.max(interestRate - 2, 3.9); break;
+        case 'good': adjustedRate = interestRate; break;
+        case 'fair': adjustedRate = interestRate + 3; break;
+        case 'poor': adjustedRate = interestRate + 6; break;
+    }
+
+    const loanAmount = vehiclePrice - downPayment;
+    const monthlyRate = adjustedRate / 100 / 12;
+    const numberOfPayments = loanTerm;
+
+    let monthlyPayment;
+    if (monthlyRate === 0) {
+        monthlyPayment = loanAmount / numberOfPayments;
+    } else {
+        monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    }
+
+    const totalCost = monthlyPayment * numberOfPayments + downPayment;
+    const totalInterest = totalCost - vehiclePrice;
+
+    document.getElementById('monthlyPayment').textContent = '₹' + monthlyPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('loanAmount').textContent = '₹' + loanAmount.toLocaleString();
+    document.getElementById('totalInterest').textContent = '₹' + totalInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('totalCost').textContent = '₹' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Update interest rate display
+    document.getElementById('interestRate').value = adjustedRate.toFixed(1);
+}
+
+// Auto-calculate on input change
+document.querySelectorAll('#vehiclePrice, #downPayment, #interestRate, #loanTerm, #creditScore').forEach(input => {
+    input.addEventListener('input', calculateLoan);
+    input.addEventListener('change', calculateLoan);
+});
+
+// Contact Form
+contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        interest: document.getElementById('interest').value,
+        message: document.getElementById('message').value
+    };
+
+    // Simulate form submission
+    alert('Thank you, ' + formData.firstName + '! We have received your inquiry and will contact you within 24 hours.\n\nNote: This is a demo. In production, connect this to a backend service like Formspree, Netlify Forms, or EmailJS.');
+
+    contactForm.reset();
+});
+
+// Scroll Animation
+function setupScrollAnimation() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .car-card, .financing-card, .requirement').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});// Filter Buttons
+// Mobile Menu
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    } else {
+        navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+    }
+});
+
+// Loan Calculator
+function calculateLoan() {
+    const vehiclePrice = parseFloat(document.getElementById('vehiclePrice').value) || 0;
+    const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+    const loanTerm = parseInt(document.getElementById('loanTerm').value) || 60;
+    const creditScore = document.getElementById('creditScore').value;
+
+    // Adjust rate based on credit score
+    let adjustedRate = interestRate;
+    switch(creditScore) {
+        case 'excellent': adjustedRate = Math.max(interestRate - 2, 3.9); break;
+        case 'good': adjustedRate = interestRate; break;
+        case 'fair': adjustedRate = interestRate + 3; break;
+        case 'poor': adjustedRate = interestRate + 6; break;
+    }
+
+    const loanAmount = vehiclePrice - downPayment;
+    const monthlyRate = adjustedRate / 100 / 12;
+    const numberOfPayments = loanTerm;
+
+    let monthlyPayment;
+    if (monthlyRate === 0) {
+        monthlyPayment = loanAmount / numberOfPayments;
+    } else {
+        monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    }
+
+    const totalCost = monthlyPayment * numberOfPayments + downPayment;
+    const totalInterest = totalCost - vehiclePrice;
+
+    document.getElementById('monthlyPayment').textContent = '₹' + monthlyPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('loanAmount').textContent = '₹' + loanAmount.toLocaleString();
+    document.getElementById('totalInterest').textContent = '₹' + totalInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('totalCost').textContent = '₹' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Update interest rate display
+    document.getElementById('interestRate').value = adjustedRate.toFixed(1);
+}
+
+// Auto-calculate on input change
+document.querySelectorAll('#vehiclePrice, #downPayment, #interestRate, #loanTerm, #creditScore').forEach(input => {
+    input.addEventListener('input', calculateLoan);
+    input.addEventListener('change', calculateLoan);
+});
+
+// Contact Form
+contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        interest: document.getElementById('interest').value,
+        message: document.getElementById('message').value
+    };
+
+    // Simulate form submission
+    alert('Thank you, ' + formData.firstName + '! We have received your inquiry and will contact you within 24 hours.\n\nNote: This is a demo. In production, connect this to a backend service like Formspree, Netlify Forms, or EmailJS.');
+
+    contactForm.reset();
+});
+
+// Scroll Animation
+function setupScrollAnimation() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .car-card, .financing-card, .requirement').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});// DOM Elements
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+const navbar = document.getElementById('navbar');
+const contactForm = document.getElementById('contactForm');
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    calculateLoan();
+    setupScrollAnimation();
+});
+
+// Filter Buttons
+// Mobile Menu
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    } else {
+        navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+    }
+});
+
+// Loan Calculator
+function calculateLoan() {
+    const vehiclePrice = parseFloat(document.getElementById('vehiclePrice').value) || 0;
+    const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+    const loanTerm = parseInt(document.getElementById('loanTerm').value) || 60;
+    const creditScore = document.getElementById('creditScore').value;
+
+    // Adjust rate based on credit score
+    let adjustedRate = interestRate;
+    switch(creditScore) {
+        case 'excellent': adjustedRate = Math.max(interestRate - 2, 3.9); break;
+        case 'good': adjustedRate = interestRate; break;
+        case 'fair': adjustedRate = interestRate + 3; break;
+        case 'poor': adjustedRate = interestRate + 6; break;
+    }
+
+    const loanAmount = vehiclePrice - downPayment;
+    const monthlyRate = adjustedRate / 100 / 12;
+    const numberOfPayments = loanTerm;
+
+    let monthlyPayment;
+    if (monthlyRate === 0) {
+        monthlyPayment = loanAmount / numberOfPayments;
+    } else {
+        monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    }
+
+    const totalCost = monthlyPayment * numberOfPayments + downPayment;
+    const totalInterest = totalCost - vehiclePrice;
+
+    document.getElementById('monthlyPayment').textContent = '₹' + monthlyPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('loanAmount').textContent = '₹' + loanAmount.toLocaleString();
+    document.getElementById('totalInterest').textContent = '₹' + totalInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    document.getElementById('totalCost').textContent = '₹' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Update interest rate display
+    document.getElementById('interestRate').value = adjustedRate.toFixed(1);
+}
+
+// Auto-calculate on input change
+document.querySelectorAll('#vehiclePrice, #downPayment, #interestRate, #loanTerm, #creditScore').forEach(input => {
+    input.addEventListener('input', calculateLoan);
+    input.addEventListener('change', calculateLoan);
+});
+
+// Contact Form
+contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        interest: document.getElementById('interest').value,
+        message: document.getElementById('message').value
+    };
+
+    // Simulate form submission
+    alert('Thank you, ' + formData.firstName + '! We have received your inquiry and will contact you within 24 hours.\n\nNote: This is a demo. In production, connect this to a backend service like Formspree, Netlify Forms, or EmailJS.');
+
+    contactForm.reset();
+});
+
+// Scroll Animation
+function setupScrollAnimation() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .car-card, .financing-card, .requirement').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
